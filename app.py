@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from modules.utils import validate_product, save_product, read_products
 app = Flask(__name__)
 
@@ -29,10 +29,7 @@ def product_form_submit():
     
     save_product(data)
     
-    #TODO return something to the user or redirect to a page with the list of producs
-    #TODO save somewhere
-    
-    return f'{data}'
+    return redirect(url_for('products_list'))
 
 @app.route("/products", methods=["GET"])
 def products_list():
