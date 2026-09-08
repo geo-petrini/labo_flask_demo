@@ -32,9 +32,22 @@ def validate_product(data):
     return errors
 
 def save_product(data):
-    with open(PRODUCTS_DATA_FILE, "w") as f:
-        json.dump(data, f, indent=2)
+    #TODO read all products
+    products = read_products()
     
+    #TODO append new product to list of products
+    products.append(data)
+    
+    #TODO save
+    save_all_products(products)
+
+def save_all_products(products):
+    with open(PRODUCTS_DATA_FILE, "w") as f:
+        json.dump(products, f, indent=2)
 
 def read_products():
-    pass
+    try:
+        with open(PRODUCTS_DATA_FILE, 'r') as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return []
