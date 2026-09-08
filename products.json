@@ -1,6 +1,20 @@
-{
-  "name": "Item",
-  "description": "sdkljfjklsdfjlks",
-  "price": "14923742390",
-  "category": "Food"
-}
+[
+  {
+    "name": "item1",
+    "description": "sdsfsd",
+    "price": 1,
+    "category": "Electronics"
+  },
+  {
+    "name": "Next",
+    "description": "dssd",
+    "price": 43532,
+    "category": "Clothing"
+  },
+  {
+    "name": "Item",
+    "description": "Best item ever save in a json",
+    "price": 10999409823092.0,
+    "category": "Other"
+  }
+]
