@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request
-from modules.utils import validate_product, save_product
+from modules.utils import validate_product, save_product, read_products
 app = Flask(__name__)
 
 
 @app.route("/")
 def home():
-    return "Product Catalog - <a href='/form'>Add Product</a>"
+    return render_template('base.html')
 
 @app.route('/form')
 def product_form():
@@ -21,6 +21,8 @@ def product_form_submit():
     }
     
     errors = validate_product(data)
+    data['price'] = float( data['price'] )
+    
     
     if errors:
         return render_template('product_form.html', errors=errors, form_data=data)
@@ -31,6 +33,11 @@ def product_form_submit():
     #TODO save somewhere
     
     return f'{data}'
+
+@app.route("/products", methods=["GET"])
+def products_list():
+    products = read_products()
+    return render_template('products_list.html', products=products)
 
 if __name__ == "__main__":
     app.run(debug=True)
