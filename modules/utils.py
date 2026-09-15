@@ -52,6 +52,5 @@ def read_products():
     products = Product.query.all()
     for product in products:
         data.append( product.to_dict() )
-        
-    jsonify(data)
+    return data
 
