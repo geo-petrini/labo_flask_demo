@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from modules.utils import validate_product, save_product, read_products
-from models.model import Category
+from models.conn import db
+from models.model import Category, Product
 app = Blueprint('frontend', __name__)
 
 
@@ -40,3 +41,21 @@ def product_form_submit():
 def products_list():
     products = read_products()
     return render_template('products_list.html', products=products)
+
+
+@app.route('/product/<id>', methods=['PUT'])
+def update_product(id):
+    pass
+
+@app.route('/product/<int:id>', methods=['DELETE'])
+def delete_product(id):
+    stmt = db.select(Product).filter_by(id=id)
+    product = db.session.execute(stmt).scalar_one_or_none()
+    if product:
+        db.session.delete(product)
+        db.session.commit()
+        response = {'message':f'product {id} deleted'}
+        return jsonify(response), 204   #no content, no need for an actual response
+    else:
+        response = {'error':'product not found'}
+        return jsonify(response), 404

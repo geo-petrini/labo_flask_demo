@@ -2,15 +2,20 @@ import os
 import json
 from flask import jsonify
 from models.conn import db
-from models.model import Product
+from models.model import Product, Category
 
 def validate_product(data):
+    print(f'data {data}')
     errors = {}
     if not data.get('name') or not data['name']:
         errors['name'] = "Name is required"
         
     if not data.get('category') or not data['category']:
         errors['category'] = "Category is required"
+        #TODO validate category id from db
+        category = Category.query.filter_by(id= int(data['category']))
+        if not category:
+            errors['category'] = "Invalid category"
     
     if not data.get('price') or not data['price']:
         errors['price'] = "Price is required"
@@ -19,6 +24,7 @@ def validate_product(data):
         try:
             if float(data['price']) < 0:
                 errors['price'] = "Price must be >= 0"
+
         except (TypeError, ValueError):
             # except Exception as e: #chatces all exceptions, not elegant
             errors['price'] = "Price must be a number"
@@ -35,7 +41,8 @@ def save_product(data):
     #product = Product(**data)
     product = Product(name = data['name'],
                       description = data['description'],
-                      price= data['price']
+                      price= data['price'],
+                      category_id = int(data['category'])
                       )
     try:
         db.session.add(product)
