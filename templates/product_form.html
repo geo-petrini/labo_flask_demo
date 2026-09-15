@@ -36,10 +36,13 @@
         <label for="category" class="form-label">Category</label>
         <select id="category" name="category" class="form-control" required>
             <option value="">Select a category</option>
-            <option value="Electronics">Electronics</option>
+            {% for category in categories %}
+            <option value="{{ category.id}}">{{ category.name }} </option>
+            {% endfor %}
+            <!-- <option value="Electronics">Electronics</option>
             <option value="Clothing">Clothing</option>
             <option value="Food">Food</option>
-            <option value="Other">Other</option>
+            <option value="Other">Other</option> -->
         </select>
     </div>
     <button type="submit" class="btn btn-primary">Add product</button>

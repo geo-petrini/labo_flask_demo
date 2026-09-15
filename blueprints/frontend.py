@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from modules.utils import validate_product, save_product, read_products
-
+from models.model import Category
 app = Blueprint('frontend', __name__)
 
 
@@ -10,7 +10,11 @@ def home():
 
 @app.route('/form')
 def product_form():
-    return render_template('product_form.html')
+    categories = Category.query.all()
+    data = []
+    for category in categories:
+        data.append( category.to_dict() )
+    return render_template('product_form.html', categories=data)
 
 @app.route('/form', methods=['POST'])
 def product_form_submit():
